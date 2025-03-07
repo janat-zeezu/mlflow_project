@@ -1,0 +1,23 @@
+data:
+  destinations_path: data/destinations.csv
+  activities_path: data/activities.csv
+  costs_path: data/costs.csv
+
+model:
+  destination_finder:
+    name: SentenceTransformerModel
+    params:
+      embedding_model: all-MiniLM-L6-v2
+      similarity_threshold: 0.75
+      
+budget_wizard:
+  name: GradientBoostingRegressor
+  params:
+    n_estimators: 100
+    max_depth: 5
+
+trip_builder:
+  name: SequenceOptimizer
+  params:
+    max_activities_per_day: 5
+    travel_time_weight: 0.3
