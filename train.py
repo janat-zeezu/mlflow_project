@@ -1,49 +1,79 @@
 import mlflow
-import numpy as np
-from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, precision_score, recall_score
 from sklearn.datasets import load_iris
-
-# Set MLflow tracking URI and experiment
-mlflow.set_tracking_uri("databricks")
-mlflow.set_experiment("/IrisClassification")
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
 
 # Load dataset
 iris = load_iris()
-X, y = iris.data, iris.target
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+X_train, X_test, y_train, y_test = train_test_split(iris.data, iris.target, test_size=0.2)
 
-# Start MLflow run
+# Define model parameters
+n_estimators = 100
+max_depth = 7
+
+import mlflow
+
+# Set the correct tracking URI
+mlflow.set_tracking_uri("file:///C:/Users/HP/mlFlow/mlflow_project/mlruns")  # Use forward slashes
+mlflow.set_experiment("Iris Classification")
+
+import numpy as np
+import pandas as pd
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+# Load dataset
+iris = load_iris()
+X_train, X_test, y_train, y_test = train_test_split(iris.data, iris.target, test_size=0.2)
+
+# Set tracking URI and experiment
+mlflow.set_tracking_uri("file:///C:/Users/HP/mlFlow/mlflow_project/mlruns")
+mlflow.set_experiment("Iris Classification")
+
+
 with mlflow.start_run():
-    # Set parameters
-    n_estimators = 100
-    max_depth = 7
-    
     # Log parameters
     mlflow.log_param("n_estimators", n_estimators)
     mlflow.log_param("max_depth", max_depth)
-    mlflow.log_param("dataset", "iris")
-    
+
     # Train model
-    model = RandomForestClassifier(
-        n_estimators=n_estimators, max_depth=max_depth)
-    model.fit(X_train, y_train)
-    
-    # Make predictions
+    model = RandomForestClassifier(n_estimators=n_estimators, max_depth=max_depth)
+    model.fit(X_train, y_train)  # ✅ Model is trained here
+
+    # Evaluate model
     y_pred = model.predict(X_test)
-    
-    # Calculate and log metrics
     accuracy = accuracy_score(y_test, y_pred)
-    precision = precision_score(y_test, y_pred, 
-                               average='weighted')
-    recall = recall_score(y_test, y_pred, 
-                         average='weighted')
     
+    # Log metric
     mlflow.log_metric("accuracy", accuracy)
-    mlflow.log_metric("precision", precision)
-    mlflow.log_metric("recall", recall)
+
+    # Create input example (one sample from training set)
+    example_input = pd.DataFrame([X_train[0]], columns=iris.feature_names)
+
+    # ✅ Ensure model is trained before logging
+    mlflow.sklearn.log_model(model, "model", input_example=example_input)
+
+print("Training complete! Check MLflow UI for results.")
+
+
+# Start MLflow run
+with mlflow.start_run():
+    mlflow.log_param("n_estimators", n_estimators)
+    mlflow.log_param("max_depth", max_depth)
+
+    # Train model
+    model = RandomForestClassifier(n_estimators=n_estimators, max_depth=max_depth)
+    model.fit(X_train, y_train)
+
+    # Evaluate model
+    y_pred = model.predict(X_test)
+    accuracy = accuracy_score(y_test, y_pred)
     
-    # Log the model
-    mlflow.sklearn.log_model(model, 
-                            "random_forest_model")
+    # Log metric
+    mlflow.log_metric("accuracy", accuracy)
+
+    # Save model
+    mlflow.sklearn.log_model(model, "model")

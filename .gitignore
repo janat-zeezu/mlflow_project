@@ -1,6 +1,4 @@
-mlruns/
-__pycache__/
-*.pyc
-/datadestinations.csv
-/dataactivities.csv
-/datacosts.csv
+echo "mlruns/" >> .gitignore
+echo "__pycache__/" >> .gitignore
+echo "*.pyc" >> .gitignore
+conda activate mlflow-demo

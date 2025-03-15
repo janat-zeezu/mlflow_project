@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/HP/mlFlow/mlflow_project/mlruns/108477250671583871/267ef2a90b294f05b0143e16b7698305/artifacts
+end_time: 1742060481543
+entry_point_name: ''
+experiment_id: '108477250671583871'
+lifecycle_stage: active
+run_id: 267ef2a90b294f05b0143e16b7698305
+run_name: angry-hawk-882
+run_uuid: 267ef2a90b294f05b0143e16b7698305
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1742060475121
+status: 3
+tags: []
+user_id: HP

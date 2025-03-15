@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/HP/mlFlow/mlflow_project/mlruns/108477250671583871/23c04b77168d4c5aa357e34966e09249/artifacts
+end_time: 1742059829116
+entry_point_name: ''
+experiment_id: '108477250671583871'
+lifecycle_stage: active
+run_id: 23c04b77168d4c5aa357e34966e09249
+run_name: awesome-shrimp-817
+run_uuid: 23c04b77168d4c5aa357e34966e09249
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1742059819110
+status: 3
+tags: []
+user_id: HP
